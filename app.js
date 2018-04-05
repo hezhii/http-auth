@@ -11,7 +11,8 @@ app.get('/', (req, res) => {
 
 app.get('/basic', (req, res) => {
   const unauthorized = (res) => {
-    res.set('WWW-Authenticate', 'Basic realm="Please input username and password"')
+    // realm 是服务器分配的字符串，用于对请求 URI 所指定的受保护资源进行标识，定义受保护的区间。
+    res.set('WWW-Authenticate', 'Basic realm="/basic"')
     res.sendStatus(401)
   }
   const parse = (header) => {
