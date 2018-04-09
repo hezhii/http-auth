@@ -14,12 +14,14 @@ const connect = (authenticate) => {
     })
   }
 }
-const render = (req, res) => {
-  res.send(`<h1>Welcome, ${req.user}</h1>`)
-}
 
-app.get('/basic', connect(auth.basic), render)
-app.get('/digest', connect(auth.digest), render)
+app.get('/basic', connect(auth.basic), (req, res) => {
+  res.send(`<h1>Basic: Welcome, ${req.user}</h1>`)
+})
+
+app.get('/digest', connect(auth.digest), (req, res) => {
+  res.send(`<h1>Digest: Welcome, ${req.user}</h1>`)
+})
 
 const server = http.createServer(app)
 const PORT = process.env.PORT || 8080
