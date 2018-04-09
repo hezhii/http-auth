@@ -8,13 +8,18 @@ const parseAuthorization = (header) => {
 }
 
 const getUser = (str) => {
+  if (!str) {
+    return {}
+  }
   const arr = Buffer.from(str, 'base64').toString('utf8').split(':')
   const username = arr[0]
   const password = arr[1]
   // 方便起见，直接写死用户名和密码，实际场景中可以从数据库中获取，并且真实密码不应该明文存储。
   if (username === USER.username && password === USER.password) {
+    console.log('鉴权成功')
     return { username }
   } else {
+    console.log('用户名或密码错误')
     return {}
   }
 }
@@ -29,16 +34,14 @@ const authenticate = (req, res, callback) => {
   const header = req.get('authorization')
   if (header) {
     const options = parseAuthorization(header)
-    if (options) {
-      const user = getUser(options)
-      if (user.username) {
-        req.user = user.username
-        if (callback) {
-          callback(req, res)
-        }
-      } else {
-        challenge(res)
+    const user = getUser(options)
+    if (user.username) {
+      req.user = user.username
+      if (callback) {
+        callback(req, res)
       }
+    } else {
+      challenge(res)
     }
   } else {
     challenge(res)
