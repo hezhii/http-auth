@@ -19,9 +19,10 @@ const render = (req, res) => {
 }
 
 app.get('/basic', connect(auth.basic), render)
+app.get('/digest', connect(auth.digest), render)
 
 const server = http.createServer(app)
 const PORT = process.env.PORT || 8080
 server.listen(PORT, () => {
-  console.log(`服务器已启动，监听 ${PORT} 端口`)
+  console.log(`服务器已启动，访问 http://localhost:${PORT} 进行测试。`)
 })
