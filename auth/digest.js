@@ -133,7 +133,7 @@ const authenticate = (req, res, callback) => {
       }
     }
   } else {
-    challenge()
+    challenge(res)
   }
 }
 

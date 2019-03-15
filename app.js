@@ -15,12 +15,18 @@ const connect = (authenticate) => {
   }
 }
 
+app.get('/img', (req, res) => {
+  console.log('请求图片', req.headers)
+  res.end('123')
+})
+
 app.get('/basic', connect(auth.basic), (req, res) => {
-  res.send(`<h1>Basic: Welcome, ${req.user}</h1>`)
+  res.send(`<h1>Basic: Welcome, ${req.user}</h1><img src="/img" />`)
 })
 
 app.get('/digest', connect(auth.digest), (req, res) => {
-  res.send(`<h1>Digest: Welcome, ${req.user}</h1>`)
+  console.log('摘要认证：', req.headers)
+  res.sendFile(path.resolve(__dirname, './img.png'))
 })
 
 const server = http.createServer(app)
